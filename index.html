@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="css/reveal.css" />
+    <link rel="stylesheet" href="css/theme/solarized.css" />
+    <link href="https://fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet">
+  <style>
+    li,
+    ul {
+      list-style: none;
+      list-style-image: none;
+      list-style-type: none;
+    }
+  </style>
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css" />
+    <style>
+      ul {
+        list-style: none;
+      }
+      li {
+        font-size: 10em;
+      }
+    </style>
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.type = "text/css";
+      link.href = window.location.search.match(/print-pdf/gi)
+        ? "css/print/pdf.css"
+        : "css/print/paper.css";
+      document.getElementsByTagName("head")[0].appendChild(link);
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides" style="text-transform: none">
+        <section>
+          <h3 style="text-transform: none"><span>Simon Sinding</span></h3>
+          <p style="text-transform: none">
+            <span>Distribution and Integration Technologies - 2019</span>
+          </p>
+        </section>
+        <section><h3 style="text-transform: none">The Meyer Game!</h3></section>
+        <section>
+          <ul style="list-style: none">
+            <h3>What is Meyer ?</h3>
+            <li class="fragment"><p>Simple danish drinking game</p></li>
+            <li class="fragment">
+              <p>
+                The Rules? <span class="fragment">Roll the dice, and lie</span>
+              </p>
+            </li>
+            <li class="fragment">
+              <p>
+                If you get caught lying?
+                <span class="fragment"
+                  >You <span style="color: forestgreen">drink!</span></span
+                >
+              </p>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3 style="text-transform: none">How was the prototype made?</h3>
+        </section>
+        <section>
+          <div class="twocolumn">
+            <pre
+              style="box-shadow: none; height: 100%"
+            ><code class="javascript" style="height: 100%; border-radius: 5px" data-trim data-noescape>
+                <span class="fragment" data-fragment-index="1">// Made with NodeJS</span>
+                <span class="fragment" data-fragment-index="2">const express = require('express');</span>
+                <span class="fragment" data-fragment-index="2">const app = express();</span>
+                <span class="fragment" data-fragment-index="2">const server = http.Server(app);</span>
+                <span class="fragment" data-fragment-index="3">const socketIO = require('socket.io');</span>
+                <span class="fragment" data-fragment-index="3">const io = socketIO(server);</span>
+                <span class="fragment" data-fragment-index="3">io.on('connection', function(socket) {</span>
+                <span class="fragment" data-fragment-index="3" style="margin-left: 20px; color:gray;">// ...</span>
+                <span class="fragment" data-fragment-index="3" style="margin-left: 20px; color:gray;">// Server code</span>
+                <span class="fragment" data-fragment-index="3" style="margin-left: 20px; color:gray;">// ...</span>
+                <span class="fragment" data-fragment-index="3">});</span>
+                <span class="fragment" data-fragment-index="4">app.use('/static', 
+                  express.static(__dirname + '/static')
+                );</span>
+            </code></pre>
+            <ul style="list-style: none">
+              <h3>Backend</h3>
+              <li class="fragment" data-fragment-index="1"><p>NodeJS</p></li>
+              <li class="fragment" data-fragment-index="2"><p>Express</p></li>
+              <li class="fragment" data-fragment-index="3"><p>Socket.IO</p></li>
+              <li class="fragment" data-fragment-index="4">
+                <p>Serves front-end client</p>
+              </li>
+              <li class="fragment" data-fragment-index="5">
+                <p>Contains the game information</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <div class="twocolumn">
+            <pre
+              style="box-shadow: none; height: 100%"
+            ><code class="javascript" style="height: 100%; border-radius: 5px" data-trim data-noescape>
+                <span class="fragment" data-fragment-index="1">// Vanilla JS<span class="fragment" data-fragment-index="2">-ish</span> </span>
+                <span class="fragment" data-fragment-index="3">const socket = io('http://localhost:5000');</span>
+                <span class="fragment" data-fragment-index="4">const startButton = 
+                  document.getElementById('startButton');</span>
+                <span></span>
+                <span class="fragment" data-fragment-index="5">function getRoll() {
+                <span class="fragment" data-fragment-index="5" style="margin-left: 20px;">socket.emit('roll');</span>
+                <span class="fragment" data-fragment-index="5"></span>}</span>
+                <span class="fragment" data-fragment-index="6">socket.on('returnRoll', function(data) {</span>
+                <span class="fragment" data-fragment-index="6" style="margin-left: 20px; color:gray;">// ...</span>
+                <span class="fragment" data-fragment-index="6">});</span>
+                
+            </code></pre>
+            <ul style="list-style: none">
+              <h3>Frontend</h3>
+              <li class="fragment" data-fragment-index="1">
+                <p>
+                  Vanilla Javascript
+                  <span
+                    class="fragment"
+                    style="color:tomato; font-size: 0.7em"
+                    data-fragment-index="2"
+                    >* mostly</span
+                  >
+                </p>
+              </li>
+              <li class="fragment" data-fragment-index="3"><p>Socket.IO</p></li>
+              <li class="fragment" data-fragment-index="4">
+                <p>Interacts with DOM</p>
+              </li>
+              <li class="fragment" data-fragment-index="5">
+                <p>Emits user interactions</p>
+              </li>
+              <li class="fragment" data-fragment-index="6">
+                <p>Listen to game state changes</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <h5>Okay cool</h5>
+          <h5 class="fragment">
+            <span>You might ask</span><span class="fragment"> "But.. </span>
+          </h5>
+          <h3><span class="fragment">What did you change?"</span></h3>
+        </section>
+        <section>
+          <h5>I'm glad you asked</h5>
+          <h3><span class="fragment">The Frontend</span></h3>
+          <h5><span class="fragment">backend is mostly the same, but small bug fixes</span></h5>
+        </section>
+        <section>
+          From this
+          <img style="border: none" src="./old.png" alt="">
+        </section>
+        <section>
+          To this
+          <img style="border: none" src="./new.png" alt="">
+        </section>
+        <section>
+          <h3>How?!</h3>
+        </section>
+        <section>
+          <ul style="list-style: none;">
+            <li style="text-align: center"><h3>Vue</h3></li>
+            <li style="text-align: center">
+              <img
+                src="https://vuejs.org/images/logo.png?_sw-precache=cf23526f451784ff137f161b8fe18d5a"
+                alt=""
+                style="width: 40%; height: auto; border: none; box-shadow: none"
+              />
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>What is Vue?</h3>
+          <ul style="list-style: none;">
+            <li class="fragment">Framework for UI</li>
+            <li class="fragment">Small package<span class="fragment"> - <span style="color:forestgreen">~20kb</span></span></li>
+            <li class="fragment">Virtual DOM</li>
+            <li class="fragment">Evan You</span></li>
+          </ul>
+        </section>
+        <section>
+          <h3>Why Vue? - Pros</h3>
+          <ul style="list-style: none;">
+            <li class="fragment" data-fragment-index="1">Learning curve is not steep<span style="color:red" class="fragment"
+                data-fragment-index="2">*</span></li>
+            <li class="fragment">Looks like HTML - &lt;template&gt;</li>
+            <li class="fragment">Pure JS, not mixed <span class="fragment"> - like JSX</span></li>
+            <li class="fragment">Easy to
+              <span style="font-family: 'Sonsie One', cursive; color:dodgerblue">
+                style
+              </span>
+            </li>
+            <br />
+            <br />
+            <li class="fragment" style="font-size:18px" data-fragment-index="3"><span style="color:red">*</span> If you know abit HTML, Javascript
+              and CSS</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Why Vue? - Cons</h3>
+          <ul>
+            <li class="fragment">Only view layer - Not fullstack</li>
+            <li class="fragment">Lots support libraries</li>
+            <ul>
+              <li class="fragment">Vue Router</li>
+              <li class="fragment">VueX</li>
+            </ul>
+            <li class="fragment">Popularity</li>
+            <ul>
+              <li class="fragment">React</li>
+              <li class="fragment">Angular</li>
+            </ul>
+          </ul>
+        </section>
+        <section>
+          <h3>Vue Components</h3>
+        </section>
+        <section>
+          <h4>What is Vue Components?</h4>
+          <ul>
+            <li class="fragment">Single usecase</li>
+            <li class="fragment">Contains everything</li>
+            <li class="fragment">Reuseable</li>
+          </ul>
+        </section>
+        <section>
+          <pre style="width: 100%; margin: none; box-shadow: none; ">
+            <code class="html" style="max-height: none;" data-noescape data-trim>
+              &lt;template&gt;
+                &lt;q-page class="flex flex-center"&gt;
+                  &lt;div class="row justify-center"&gt;
+                    &lt;div class="col-12 text-center"&gt;
+                      &lt;h4 class="text-bold"&gt;Welcome to The Meyer Game&lt;/h4&gt;
+                    &lt;/div&gt;
+                    &lt;q-input 
+                    class="q-headline col-12" 
+                    v-model="name" stack-label="Your Nickname" /&gt;
+                    &lt;q-btn 
+                    class="q-mt-md" 
+                    label="Join the game" 
+                    :disable="disabled" 
+                    :color="disabled ? '': 'primary'" 
+                    no-caps
+                    no-ripple @click="joinGame" /&gt;
+                  &lt;/div&gt;
+                &lt;/q-page&gt;
+              &lt;template&gt;
+            </code>
+          </pre>
+        </section>
+        <section>
+          <pre style="width: 100%; margin: none; box-shadow: none; ">
+            <code class="javascript" style="max-height: none;" data-noescape data-trim>
+              import { mapActions } from 'vuex'
+              export default {
+                name: 'PageIndex',
+                data: () => ({ name: '' }),
+                computed: {
+                  disabled() {
+                    return this.name === ''
+                  }
+                },
+                methods: {
+                  ...mapActions('game', ['join']),
+                  joinGame() {
+                    this.join({ name: this.name })
+                    this.$router.push({ name: 'lobby' })
+                  }
+                }
+              }
+            </code>
+          </pre>
+        </section>
+        <section>
+          <h3 style="text-transform: none">Notable mentions</h3>
+          <ul>
+            <li>Vuex - Statemanagement</li>
+            <li>Vue Router</li>
+            <li>Quasar</li>
+          </ul>
+        </section>
+        <section>
+          <h3 style="text-transform: none">Thank you for your time!</h3>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        dependencies: [
+          { src: "plugin/markdown/marked.js" },
+          { src: "plugin/markdown/markdown.js" },
+          { src: "plugin/notes/notes.js", async: true },
+          {
+            src: "plugin/highlight/highlight.js",
+            async: true,
+            callback: function() {
+              hljs.initHighlightingOnLoad();
+            }
+          }
+        ],
+        keyboard: {
+          67: 'next', // go to the next slide when the ENTER key is pressed
+          68: 'left', // go to the next slide when the ENTER key is pressed
+        }
+      });
+    </script>
+  </body>
+</html>
